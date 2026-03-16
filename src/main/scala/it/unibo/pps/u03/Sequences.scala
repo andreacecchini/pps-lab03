@@ -70,6 +70,7 @@ object Sequences:
      * E.g., [] => []
      */
     def reverse[A](s: Sequence[A]): Sequence[A] =
+      @tailrec
       def loop(s: Sequence[A], acc: Sequence[A]): Sequence[A] = s match
         case Nil() => acc
         case Cons(h, t) => loop(t, Cons(h, acc))
