@@ -2,7 +2,7 @@ package u03
 
 import u03.Optionals.Optional
 
-object Sequences: // Essentially, generic linkedlists
+object Sequences:
   
   enum Sequence[E]:
     case Cons(head: E, tail: Sequence[E])
