@@ -18,8 +18,8 @@ object Sequences:
       case _ => 0
 
     def map[A, B](l: Sequence[A])(mapper: A => B): Sequence[B] = l match
-      case Cons(h, t) => Cons(mapper(h), map(t)(mapper))
       case Nil() => Nil()
+      case Cons(h, t) => Cons(mapper(h), map(t)(mapper))
 
     def filter[A](l1: Sequence[A])(pred: A => Boolean): Sequence[A] = l1 match
       case Cons(h, t) if pred(h) => Cons(h, filter(t)(pred))
@@ -83,7 +83,9 @@ object Sequences:
      * E.g., [10, 20, 30], calling with mapper(v => [v]) returns [10, 20, 30]
      * E.g., [10, 20, 30], calling with mapper(v => Nil()) returns []
      */
-    def flatMap[A, B](s: Sequence[A])(mapper: A => Sequence[B]): Sequence[B] = ???
+    def flatMap[A, B](s: Sequence[A])(mapper: A => Sequence[B]): Sequence[B] = s match
+      case Nil() => Nil()
+      case Cons(h, t) => concat(mapper(h), flatMap(t)(mapper))
 
     /*
      * Get the minimum element in the sequence
