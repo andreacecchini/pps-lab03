@@ -104,7 +104,14 @@ object Sequences:
      * E.g., [10, 20, 30] => [10, 30]
      * E.g., [10, 20, 30, 40] => [10, 30]
      */
-    def evenIndices[A](s: Sequence[A]): Sequence[A] = ???
+    def evenIndices[A](s: Sequence[A]): Sequence[A] =
+      @tailrec
+      def loop(s: Sequence[A], acc: Sequence[A], idx: Int): Sequence[A] = (s, idx) match
+        case (Nil(), _) => acc
+        case (Cons(h, t), idx) if idx % 2 == 0 => loop(t, concat(acc, Cons(h, Nil())), idx + 1)
+        case (Cons(_, t), idx) => loop(t, acc, idx + 1)
+
+      loop(s, Nil(), 0)
 
     /*
      * Check if the sequence contains the element
