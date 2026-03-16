@@ -1,6 +1,7 @@
 package u03
 
 import u03.Optionals.Optional
+import u03.Optionals.Optional.{map as _, *}
 import u03.Sequences.Sequence.*
 
 import scala.annotation.tailrec
@@ -92,7 +93,11 @@ object Sequences:
      * E.g., [30, 20, 10] => 10
      * E.g., [10, 1, 30] => 1
      */
-    def min(s: Sequence[Int]): Optional[Int] = ???
+    def min(s: Sequence[Int]): Optional[Int] = s match
+      case Nil() => Empty()
+      case Cons(h, t) => Just(math.min(h, min(t) match
+        case Just(a) => a
+        case Empty() => h))
 
     /*
      * Get the elements at even indices
