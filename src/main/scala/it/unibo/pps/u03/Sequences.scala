@@ -128,7 +128,11 @@ object Sequences:
      * E.g., [10, 20, 10, 30] => [10, 20, 30]
      * E.g., [10, 20, 30] => [10, 20, 30]
      */
-    def distinct[A](s: Sequence[A]): Sequence[A] = ???
+    def distinct[A](s: Sequence[A]): Sequence[A] = s match
+      case Nil() => Nil()
+      case Cons(h, t) if contains(distinct(t))(h) => Cons(h, filter(distinct(t))(_ != h))
+      case Cons(h, t) => Cons(h, distinct(t))
+
 
     /*
      * Group contiguous elements in the sequence

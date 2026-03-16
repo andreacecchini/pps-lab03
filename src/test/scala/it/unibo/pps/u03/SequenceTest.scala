@@ -66,7 +66,7 @@ class SequenceTest:
 
   @Test def testDistinct() =
     assertEquals(Cons(10, Cons(20, Cons(30, Nil()))), distinct(sequence))
-    assertEquals(Cons(10, Cons(20, Nil())), distinct(Cons(10, Cons(20, Cons(10, Nil())))))
+    assertEquals(Cons(10, Cons(20, Nil())), distinct(Cons(10, Cons(20, Cons(10, Cons(20, Nil()))))))
     assertEquals(Nil(), distinct(Nil()))
 
   @Test def testGroup() =
