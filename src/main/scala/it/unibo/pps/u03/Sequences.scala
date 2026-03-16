@@ -69,9 +69,12 @@ object Sequences:
      * E.g., [10] => [10]
      * E.g., [] => []
      */
-    def reverse[A](s: Sequence[A]): Sequence[A] = s match
-      case Nil() | Cons(_, Nil()) => s
-      case Cons(h, t) => concat(reverse(t), Cons(h, Nil()))
+    def reverse[A](s: Sequence[A]): Sequence[A] =
+      def loop(s: Sequence[A], acc: Sequence[A]): Sequence[A] = s match
+        case Nil() => acc
+        case Cons(h, t) => loop(t, Cons(h, acc))
+
+      loop(s, Nil())
 
     /*
      * Map the elements of the sequence to a new sequence and flatten the result
