@@ -57,7 +57,10 @@ object Sequences:
      * E.g., [10], [] => [10]
      * E.g., [], [] => []
      */
-    def concat[A](s1: Sequence[A], s2: Sequence[A]): Sequence[A] = ???
+    def concat[A](s1: Sequence[A], s2: Sequence[A]): Sequence[A] = (s1, s2) match
+      case (_, Nil()) => s1
+      case (Nil(), _) => s2
+      case (Cons(h1, t1), _) => Cons(h1, concat(t1, s2))
 
     /*
      * Reverse the sequence
