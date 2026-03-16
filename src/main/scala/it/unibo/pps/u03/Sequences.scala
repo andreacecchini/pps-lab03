@@ -1,6 +1,7 @@
 package u03
 
 import u03.Optionals.Optional
+import u03.Sequences.Sequence.*
 
 import scala.annotation.tailrec
 
@@ -68,7 +69,9 @@ object Sequences:
      * E.g., [10] => [10]
      * E.g., [] => []
      */
-    def reverse[A](s: Sequence[A]): Sequence[A] = ???
+    def reverse[A](s: Sequence[A]): Sequence[A] = s match
+      case Nil() | Cons(_, Nil()) => s
+      case Cons(h, t) => concat(reverse(t), Cons(h, Nil()))
 
     /*
      * Map the elements of the sequence to a new sequence and flatten the result
@@ -123,8 +126,8 @@ object Sequences:
 
 @main def trySequences =
   import Sequences.*
-  val l = Sequence.Cons(10, Sequence.Cons(20, Sequence.Cons(30, Sequence.Nil())))
-  println(Sequence.sum(l)) // 30
+  val l = Cons(10, Cons(20, Cons(30, Nil())))
+  println(sum(l)) // 30
 
   import Sequence.*
 
