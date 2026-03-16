@@ -140,7 +140,11 @@ object Sequences:
      * E.g., [10, 20, 30] => [[10], [20], [30]]
      * E.g., [10, 20, 20, 30] => [[10], [20, 20], [30]]
      */
-    def group[A](s: Sequence[A]): Sequence[Sequence[A]] = ???
+    def group[A](s: Sequence[A]): Sequence[Sequence[A]] = s match
+      case Nil() => Nil()
+      case Cons(h, t) => group(t) match
+        case Cons(Cons(h1, t1), others) if h1 == h => Cons(Cons(h, Cons(h1, t1)), others)
+        case groups => Cons(Cons(h, Nil()), groups)
 
     /*
      * Partition the sequence into two sequences based on the predicate
