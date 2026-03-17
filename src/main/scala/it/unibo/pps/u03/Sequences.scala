@@ -122,10 +122,11 @@ object Sequences:
      * E.g., [10, 20, 10, 30] => [10, 20, 30]
      * E.g., [10, 20, 30] => [10, 20, 30]
      */
-    def distinct[A](s: Sequence[A]): Sequence[A] = s match
-      case Nil() => Nil()
-      case Cons(h, t) if contains(distinct(t))(h) => Cons(h, filter(distinct(t))(_ != h))
-      case Cons(h, t) => Cons(h, distinct(t))
+    def distinct[A](s: Sequence[A]): Sequence[A] =
+      foldLeft(s)(Nil())((acc, curr) => (acc, curr) match
+        case (acc, curr) if contains(acc)(curr) => acc
+        case _ => concat(acc, Cons(curr, Nil()))
+      )
 
 
     /*
