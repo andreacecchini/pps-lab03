@@ -125,9 +125,9 @@ object Sequences:
      * E.g., [10, 20, 30] => [10, 20, 30]
      */
     def distinct[A](s: Sequence[A]): Sequence[A] =
-      foldLeft(s)(Nil())((acc, curr) => (acc, curr) match
+      foldRight(s)(Nil())((curr, acc) => (acc, curr) match
         case (acc, curr) if contains(acc)(curr) => acc
-        case _ => concat(acc, Cons(curr, Nil()))
+        case _ => Cons(curr, acc)
       )
 
 
