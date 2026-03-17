@@ -20,9 +20,7 @@ object Sequences:
       case Nil() => acc
       case Cons(h, t) => foldLeft(t)(f(acc, h))(f)
 
-    def sum(l: Sequence[Int]): Int = l match
-      case Cons(h, t) => h + sum(t)
-      case _ => 0
+    def sum(l: Sequence[Int]): Int = foldLeft(l)(0)(_ + _)
 
     def map[A, B](l: Sequence[A])(mapper: A => B): Sequence[B] =
       flatMap(l)(v => Cons(mapper(v), Nil()))
