@@ -151,7 +151,7 @@ object Sequences:
     def partition[A](s: Sequence[A])(pred: A => Boolean): (Sequence[A], Sequence[A]) =
       (filter(s)(el => pred(el)), filter(s)(el => !pred(el)))
 
-    private def branch[A](cond: Boolean)(ifTrue: => A)(ifFalse: => A) = cond match
+    private def branch[A](cond: Boolean)(ifTrue: => A)(ifFalse: => A): A = cond match
       case true => ifTrue
       case _ => ifFalse
 
