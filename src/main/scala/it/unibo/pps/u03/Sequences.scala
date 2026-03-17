@@ -1,6 +1,5 @@
 package u03
 
-import it.unibo.pps.u02.HigherOrderFunctions.l
 import u03.Optionals.Optional
 import u03.Optionals.Optional.{map as _, *}
 import u03.Sequences.Sequence.*
@@ -19,6 +18,9 @@ object Sequences:
     def foldLeft[A, B](l: Sequence[A])(initial: B)(f: (B, A) => B): B = l match
       case Nil() => initial
       case Cons(h, t) => foldLeft(t)(f(initial, h))(f)
+
+    def foldRight[A,B](l: Sequence[A])(init: B)(f: (A, B) => B): B =
+      foldLeft(reverse(l))(init)((acc, a) => f(a, acc))
 
     def sum(l: Sequence[Int]): Int = foldLeft(l)(0)(_ + _)
 
