@@ -16,9 +16,9 @@ object Sequences:
   object Sequence:
 
     @tailrec
-    def foldLeft[A](l: Sequence[A])(acc: A)(f: (A, A) => A): A = l match
-      case Nil() => acc
-      case Cons(h, t) => foldLeft(t)(f(acc, h))(f)
+    def foldLeft[A, B](l: Sequence[A])(initial: B)(f: (B, A) => B): B = l match
+      case Nil() => initial
+      case Cons(h, t) => foldLeft(t)(f(initial, h))(f)
 
     def sum(l: Sequence[Int]): Int = foldLeft(l)(0)(_ + _)
 
@@ -74,12 +74,7 @@ object Sequences:
      * E.g., [] => []
      */
     def reverse[A](s: Sequence[A]): Sequence[A] =
-      @tailrec
-      def loop(s: Sequence[A], acc: Sequence[A]): Sequence[A] = s match
-        case Nil() => acc
-        case Cons(h, t) => loop(t, Cons(h, acc))
-
-      loop(s, Nil())
+      foldLeft(s)(Nil())((acc, curr) => Cons(curr, acc))
 
     /*
      * Map the elements of the sequence to a new sequence and flatten the result

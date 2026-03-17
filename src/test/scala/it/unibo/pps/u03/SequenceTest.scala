@@ -81,7 +81,6 @@ class SequenceTest:
     val (even, odd) = partition(sequence)(x => x % 2 == 0)
     assertEquals(Cons(20, Nil()), even)
     assertEquals(Cons(11, Cons(31, Nil())), odd)
-
     val emptySequence = Nil()
     val (evenEmpty, oddEmpty) = partition(emptySequence)(x => true)
     assertEquals(Nil(), evenEmpty)
