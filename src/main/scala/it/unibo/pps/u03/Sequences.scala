@@ -28,7 +28,7 @@ object Sequences:
       flatMap(l)(v => Cons(mapper(v), Nil()))
 
     def filter[A](l1: Sequence[A])(pred: A => Boolean): Sequence[A] =
-      flatMap(l1)(v => mux(pred(v))(Cons(v, Nil()))(Nil()))
+      flatMap(l1)(v => test(pred(v))(Cons(v, Nil()))(Nil()))
 
     // Lab 03
 
@@ -91,9 +91,7 @@ object Sequences:
      * E.g., [10, 1, 30] => 1
      */
     def min(s: Sequence[Int]): Optional[Int] =
-      foldLeft(s)(Empty())((min, curr) => Just(math.min(curr, min match
-        case Just(a) => a
-        case _ => curr)))
+      foldLeft(s)(Empty())((min, curr) => Just(math.min(curr, orElse(min, curr))))
 
     /*
      * Get the elements at even indices
@@ -123,7 +121,7 @@ object Sequences:
      * E.g., [10, 20, 30] => [10, 20, 30]
      */
     def distinct[A](s: Sequence[A]): Sequence[A] =
-      foldLeft(s)(Nil())((acc, curr) => mux(!contains(acc)(curr))(concat(acc, Cons(curr, Nil())))(acc))
+      foldLeft(s)(Nil())((acc, curr) => test(!contains(acc)(curr))(concat(acc, Cons(curr, Nil())))(acc))
 
 
     /*
@@ -153,7 +151,7 @@ object Sequences:
     def partition[A](s: Sequence[A])(pred: A => Boolean): (Sequence[A], Sequence[A]) =
       (filter(s)(el => pred(el)), filter(s)(el => !pred(el)))
 
-    private def mux[A](cond: Boolean)(ifTrue: => A)(ifFalse: => A) = cond match
+    private def test[A](cond: Boolean)(ifTrue: => A)(ifFalse: => A) = cond match
       case true => ifTrue
       case _ => ifFalse
 
