@@ -19,7 +19,7 @@ object Sequences:
       case Nil() => initial
       case Cons(h, t) => foldLeft(t)(f(initial, h))(f)
 
-    def foldRight[A,B](l: Sequence[A])(init: B)(f: (A, B) => B): B =
+    def foldRight[A, B](l: Sequence[A])(init: B)(f: (A, B) => B): B =
       foldLeft(reverse(l))(init)((acc, a) => f(a, acc))
 
     def sum(l: Sequence[Int]): Int = foldLeft(l)(0)(_ + _)
@@ -28,9 +28,7 @@ object Sequences:
       flatMap(l)(v => Cons(mapper(v), Nil()))
 
     def filter[A](l1: Sequence[A])(pred: A => Boolean): Sequence[A] =
-      flatMap(l1)(_ match
-        case v if pred(v) => Cons(v, Nil())
-        case _ => Nil())
+      flatMap(l1)(v => mux(pred(v))(Cons(v, Nil()))(Nil()))
 
     // Lab 03
 
@@ -42,10 +40,10 @@ object Sequences:
      * E.g., [], 2 => []
      */
     @tailrec
-    def skip[A](s: Sequence[A])(n: Int): Sequence[A] = (s, n) match
-      case (Nil(), _) => Nil()
-      case (s, n) if n == 0 => s
-      case (Cons(_, t), n) => skip(t)(n - 1)
+    def skip[A](s: Sequence[A])(n: Int): Sequence[A] = s match
+      case Nil() => Nil()
+      case s if n == 0 => s
+      case Cons(_, t) => skip(t)(n - 1)
 
     /*
      * Zip two sequences
@@ -125,10 +123,7 @@ object Sequences:
      * E.g., [10, 20, 30] => [10, 20, 30]
      */
     def distinct[A](s: Sequence[A]): Sequence[A] =
-      foldRight(s)(Nil())((curr, acc) => (acc, curr) match
-        case (acc, curr) if contains(acc)(curr) => acc
-        case _ => Cons(curr, acc)
-      )
+      foldLeft(s)(Nil())((acc, curr) => mux(!contains(acc)(curr))(concat(acc, Cons(curr, Nil())))(acc))
 
 
     /*
@@ -157,6 +152,10 @@ object Sequences:
      */
     def partition[A](s: Sequence[A])(pred: A => Boolean): (Sequence[A], Sequence[A]) =
       (filter(s)(el => pred(el)), filter(s)(el => !pred(el)))
+
+    private def mux[A](cond: Boolean)(ifTrue: => A)(ifFalse: => A) = cond match
+      case true => ifTrue
+      case _ => ifFalse
 
 @main def trySequences(): Unit =
   import Sequences.*
