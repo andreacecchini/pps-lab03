@@ -140,11 +140,18 @@ object Sequences:
      * E.g., [10, 20, 30] => [[10], [20], [30]]
      * E.g., [10, 20, 20, 30] => [[10], [20, 20], [30]]
      */
-    def group[A](s: Sequence[A]): Sequence[Sequence[A]] = s match
-      case Nil() => Nil()
-      case Cons(h, t) => group(t) match
-        case Cons(Cons(h1, t1), others) if h1 == h => Cons(Cons(h, Cons(h1, t1)), others)
-        case groups => Cons(Cons(h, Nil()), groups)
+    def group[A](s: Sequence[A]): Sequence[Sequence[A]] =
+      @tailrec
+      def loop(remaining: Sequence[A],
+               currentGroup: Sequence[A],
+               result: Sequence[Sequence[A]]): Sequence[Sequence[A]]
+      = (remaining, currentGroup) match
+        case (Nil(), Nil()) => result
+        case (Nil(), Cons(_, _)) => concat(result, Cons(currentGroup, Nil()))
+        case (Cons(h, t), Cons(h1, _)) if h != h1 => loop(t, Cons(h, Nil()), concat(result, Cons(currentGroup, Nil())))
+        case (Cons(h, t), _) => loop(t, Cons(h, currentGroup), result)
+
+      loop(s, Nil(), Nil())
 
     /*
      * Partition the sequence into two sequences based on the predicate
