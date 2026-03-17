@@ -114,10 +114,8 @@ object Sequences:
      * E.g., [10, 20, 30] => true if elem is 20
      * E.g., [10, 20, 30] => false if elem is 40
      */
-    @tailrec
-    def contains[A](s: Sequence[A])(elem: A): Boolean = s match
-      case Nil() => false
-      case Cons(h, t) => h == elem || contains(t)(elem)
+    def contains[A](s: Sequence[A])(elem: A): Boolean =
+      foldLeft(s)(false)((isPresent, curr) => isPresent || curr == elem)
 
     /*
      * Remove duplicates from the sequence
