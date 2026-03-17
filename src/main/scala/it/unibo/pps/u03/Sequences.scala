@@ -161,7 +161,7 @@ object Sequences:
     def partition[A](s: Sequence[A])(pred: A => Boolean): (Sequence[A], Sequence[A]) =
       (filter(s)(el => pred(el)), filter(s)(el => !pred(el)))
 
-@main def trySequences =
+@main def trySequences(): Unit =
   import Sequences.*
   val l = Cons(10, Cons(20, Cons(30, Nil())))
   println(sum(l)) // 30
