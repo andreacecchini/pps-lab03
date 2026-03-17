@@ -1,5 +1,9 @@
 package u03
 
+import u03.Optionals.Optional.*
+import u03.Sequences.Sequence
+import Sequence.*
+
 // overall module
 object Optionals:
 
@@ -22,6 +26,10 @@ object Optionals:
     def map[A, B](opt: Optional[A])(f: A => B): Optional[B] = opt match
       case Just(a) => Just(f(a))
       case _       => Empty()
+
+    def toSequence[A](opt: Optional[A]): Sequence[A] = opt match
+      case Just(a) => Cons(a, Nil())
+      case _ => Nil()
 
 @main def tryOptionals =
   import Optionals.* // to work with Optionals (to see Optional type)
