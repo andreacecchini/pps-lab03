@@ -90,11 +90,10 @@ object Sequences:
      * E.g., [30, 20, 10] => 10
      * E.g., [10, 1, 30] => 1
      */
-    def min(s: Sequence[Int]): Optional[Int] = s match
-      case Nil() => Empty()
-      case Cons(h, t) => Just(math.min(h, min(t) match
+    def min(s: Sequence[Int]): Optional[Int] =
+      foldLeft(s)(Empty())((min, curr) => Just(math.min(curr, min match
         case Just(a) => a
-        case Empty() => h))
+        case _ => curr)))
 
     /*
      * Get the elements at even indices
