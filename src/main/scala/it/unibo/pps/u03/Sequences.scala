@@ -1,5 +1,6 @@
 package u03
 
+import it.unibo.pps.u02.HigherOrderFunctions.l
 import u03.Optionals.Optional
 import u03.Optionals.Optional.{map as _, *}
 import u03.Sequences.Sequence.*
@@ -21,10 +22,10 @@ object Sequences:
     def map[A, B](l: Sequence[A])(mapper: A => B): Sequence[B] =
       flatMap(l)(v => Cons(mapper(v), Nil()))
 
-    def filter[A](l1: Sequence[A])(pred: A => Boolean): Sequence[A] = l1 match
-      case Cons(h, t) if pred(h) => Cons(h, filter(t)(pred))
-      case Cons(_, t) => filter(t)(pred)
-      case Nil() => Nil()
+    def filter[A](l1: Sequence[A])(pred: A => Boolean): Sequence[A] =
+      flatMap(l1)(_ match
+        case v if pred(v) => Cons(v, Nil())
+        case _ => Nil())
 
     // Lab 03
 
