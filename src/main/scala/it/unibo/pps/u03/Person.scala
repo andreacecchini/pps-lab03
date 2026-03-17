@@ -23,6 +23,4 @@ object Person:
     case _ => false
 
   def getCourses(people: Sequence[Person]): Sequence[String] =
-    flatMap(people)(course(_) match
-      case Empty() => Nil()
-      case Just(a) => Cons(a, Nil()))
+    Sequence.map(filter(Sequence.map(people)(course))(!isEmpty(_)))(orElse(_, ""))
