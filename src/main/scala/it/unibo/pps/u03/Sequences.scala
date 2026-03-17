@@ -15,6 +15,11 @@ object Sequences:
 
   object Sequence:
 
+    @tailrec
+    def foldLeft[A](l: Sequence[A])(acc: A)(f: (A, A) => A): A = l match
+      case Nil() => acc
+      case Cons(h, t) => foldLeft(t)(f(acc, h))(f)
+
     def sum(l: Sequence[Int]): Int = l match
       case Cons(h, t) => h + sum(t)
       case _ => 0
