@@ -85,7 +85,7 @@ object Sequences:
      * E.g., [10, 20, 30], calling with mapper(v => Nil()) returns []
      */
     def flatMap[A, B](s: Sequence[A])(mapper: A => Sequence[B]): Sequence[B] =
-      foldLeft(s)(Nil())((acc, curr) => concat(acc, mapper(curr)))
+      foldRight(s)(Nil())((curr, acc) => concat(mapper(curr), acc))
 
     /*
      * Get the minimum element in the sequence
