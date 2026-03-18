@@ -25,10 +25,10 @@ object Sequences:
     def sum(l: Sequence[Int]): Int = foldLeft(l)(0)(_ + _)
 
     def map[A, B](l: Sequence[A])(mapper: A => B): Sequence[B] =
-      flatMap(l)(v => Cons(mapper(v), Nil()))
+      flatMap(l)(v => unit(mapper(v)))
 
     def filter[A](l1: Sequence[A])(pred: A => Boolean): Sequence[A] =
-      flatMap(l1)(v => branch(pred(v))(Cons(v, Nil()))(Nil()))
+      flatMap(l1)(v => branch(pred(v))(unit(v))(Nil()))
 
     // Lab 03
 
@@ -154,6 +154,8 @@ object Sequences:
     private def branch[A](cond: Boolean)(ifTrue: => A)(ifFalse: => A): A = cond match
       case true => ifTrue
       case _ => ifFalse
+
+    private def unit[A](v: A): Sequence[A] = Cons(v, Nil())
 
 @main def trySequences(): Unit =
   import Sequences.*
