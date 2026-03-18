@@ -155,7 +155,7 @@ object Sequences:
       case true => ifTrue
       case _ => ifFalse
 
-    private def unit[A](v: A): Sequence[A] = Cons(v, Nil())
+    def unit[A](v: A): Sequence[A] = Cons(v, Nil())
 
 @main def trySequences(): Unit =
   import Sequences.*

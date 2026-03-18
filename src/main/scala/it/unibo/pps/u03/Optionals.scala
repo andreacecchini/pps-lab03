@@ -27,7 +27,7 @@ object Optionals:
       case Just(a) => Just(f(a))
       case _       => Empty()
 
-    def toSequence[A](opt: Optional[A]): Sequence[A] = orElse(map(opt)(Cons(_, Nil())), Nil())
+    def toSequence[A](opt: Optional[A]): Sequence[A] = orElse(map(opt)(unit), Nil())
 
 @main def tryOptionals =
   import Optionals.* // to work with Optionals (to see Optional type)
