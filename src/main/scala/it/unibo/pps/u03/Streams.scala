@@ -1,6 +1,6 @@
 package u03
 
-object Streams extends App :
+object Streams extends App:
 
   import Sequences.*
 
@@ -15,7 +15,7 @@ object Streams extends App :
     def cons[A](hd: => A, tl: => Stream[A]): Stream[A] =
       lazy val head = hd
       lazy val tail = tl
-      Cons(() => head, () => tail)
+      Cons(() => { println(f"computed $head"); head }, () => tail)
 
     def toList[A](stream: Stream[A]): Sequence[A] = stream match
       case Cons(h, t) => Sequence.Cons(h(), toList(t()))
@@ -40,13 +40,6 @@ object Streams extends App :
   end Stream
 
 @main def tryStreams =
-  import Streams.* 
-
+  import Streams.*
   val str1 = Stream.iterate(0)(_ + 1) // {0,1,2,3,..}
-  val str2 = Stream.map(str1)(_ + 1) // {1,2,3,4,..}
-  val str3 = Stream.filter(str2)(x => (x < 3 || x > 20)) // {1,2,21,22,..}
-  val str4 = Stream.take(str3)(10) // {1,2,21,22,..,28}
-  println(Stream.toList(str4)) // [1,2,21,22,..,28]
-
-  lazy val corec: Stream[Int] = Stream.cons(1, corec) // {1,1,1,..}
-  println(Stream.toList(Stream.take(corec)(10))) // [1,1,..,1]
+  val str3 = Stream.filter(str1)(x => (x < 3 || x > 20)) // {1,2,21,22,..}
